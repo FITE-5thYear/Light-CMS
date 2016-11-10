@@ -21,7 +21,10 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0"
+    "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
+    "Microsoft.EntityFrameworkCore": "1.0.0",
+    "MySql.Data.Core": "7.0.4-IR-191",
+    "MySql.Data.EntityFrameworkCore": "7.0.4-IR-191"
   },
 
   "tools": {
@@ -41,7 +44,10 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "copyToOutput": {
+      "include": "appsettings.json"
+    }
   },
 
   "runtimeOptions": {
