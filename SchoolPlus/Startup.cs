@@ -36,7 +36,14 @@ namespace SchoolPlus
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
+            services.AddMvc();           
+
+            //add functionality to inject IOptions<T>
+            services.AddOptions();
+
+            //map Settings section to Settings object
+            services.Configure<Settings>(Configuration.GetSection("Settings"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
