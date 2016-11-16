@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using Components.Main;
+using SchoolPlus.Components.SingleArticle;
+using SchoolPlus.Components.CategoryList;
 
 namespace SchoolPlus
 {
@@ -26,6 +32,14 @@ namespace SchoolPlus
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
             Configuration = builder.Build();
+
+            var settings = new Settings();
+            new ConfigureFromConfigurationOptions<Settings>(Configuration.GetSection("Settings"))
+            .Configure(settings);
+
+            //bootstrap components
+            BootstrapComponents(settings.MySqlConnectionString);
+            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -66,14 +80,46 @@ namespace SchoolPlus
 
             app.UseApplicationInsightsExceptionTelemetry();
 
+            /* Static files */
             app.UseStaticFiles();
 
+            /* Admin Theme */
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"Themes/AdminTheme")),
+                RequestPath = new PathString("/admin-theme")
+            });
+
+            /* Main Theme */
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"Themes/MainTheme")),
+                RequestPath = new PathString("/theme")
+            });
+
+            /* Routes */
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name : "admin-panel",
+                    template : "admin",
+                    defaults : new { controller = "AdminPanel",  action = "Index" }
+                );
+
+                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{*link}",
+                    defaults: new { controller = "Router", action = "Index" });
             });
+        }
+
+        private void BootstrapComponents(string connectionString)
+        {
+            MainComponentController.Bootstrap(connectionString);
+            SingleArticleComponentController.Bootstrap(connectionString);
+            CategoryListComponentController.Bootstrap(connectionString);
         }
     }
 }
