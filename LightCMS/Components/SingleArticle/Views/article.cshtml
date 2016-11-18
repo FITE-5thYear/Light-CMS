@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Themes/MainTheme/Layouts/_Layout.cshtml";
+    ViewData["title"] = ViewBag.Title;
+}
+<div class="container">
+    <div class="page-section">
+        <div class="row">
+            <div class="col-md-8 col-lg-9">
+                <div class="page-section padding-top-none">
+                    <div class="s-container">
+                        <h1 class="text-display-1 margin-top-none">@ViewBag.Title</h1>                        
+                    </div>
+                    <br />
+                    <p>
+                        @Html.Raw(@ViewBag.FullContent)
+                        <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, accusamus culpa deserunt distinctio, eos expedita inventore labore laborum libero magnam nisi recusandae sapiente sunt unde, voluptatibus? Accusantium distinctio laborum nihil,
+                        nostrum possimus quos rem repellendus tenetur voluptatem! A, ad adipisci commodi doloribus id maxime provident quo suscipit. Itaque, recusandae ut.
+                            -->
+                    </p>
+                    
+                </div>                
+            </div>            
+        </div>
+    </div>
+</div>

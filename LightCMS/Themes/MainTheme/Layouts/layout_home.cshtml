@@ -1,0 +1,50 @@
+@using LightCMS
+@{    
+    ViewData["Title"] = "Home";
+}
+
+@*<h1> Page Category : @ViewData["PageCategory"] </h1>
+
+    @foreach(var item in ViewData["PageItems"] as List<Item>) {
+        <h2>
+            @item.Title
+        </h2>
+        <h3>
+            @item.ShortContent
+        </h3>
+    }
+
+
+    <div class="container">
+        <div class="page-section">
+
+          <div class="row">
+            <div class="col-md-8 col-lg-9">
+
+              @foreach(var item in ViewData["PageItems"]) {
+                  <div class="media media-grid media-paper-shadow margin-top-none s-container">
+                    <div class="media-left">
+                        <div class="icon-block half img-circle bg-grey-300">
+                            <i class="fa fa-file-text text-white"></i>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <div class="panel panel-default paper-shadow" data-z="0.5">
+                            <div class="panel-body">
+                                <div class="pull-right">
+                                    <a href="website-blog-post.html" class="btn btn-white btn-flat"><i class="fa fa-comments fa-fw"></i> 9</a>
+                                </div>
+                                <h4 class="text-title media-heading">
+                                    <a href="website-blog-post.html" class="link-text-color">@item.Title</a>
+                                </h4>
+                                <p class="text-light">@item.ShortContent</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+              }
+            </div>
+          </div>
+        </div>
+    </div>
+*@

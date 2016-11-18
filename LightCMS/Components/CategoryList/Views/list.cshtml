@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Themes/MainTheme/Layouts/_Layout.cshtml";
+    ViewData["title"] = ViewBag.Title;
+    
+}
+
+<div class="container">
+    <div class="page-section">
+        <div class="row">
+            <div class="col-md-8 col-lg-9">
+                @foreach(var item in ViewBag.items) { 
+                    <div class="media media-grid media-paper-shadow margin-top-none s-container">
+                        <div class="media-left">
+                            <div class="icon-block half img-circle bg-grey-300">
+                                <i class="fa fa-file-text text-white"></i>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <div class="panel panel-default paper-shadow" data-z="0.5">
+                                <div class="panel-body">                                
+                                    <h4 class="text-title media-heading">
+                                        <a href="website-blog-post.html" class="link-text-color">@item.Title</a>
+                                    </h4>
+                                    <p class="text-light">
+                                        @item.ShortContent
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
