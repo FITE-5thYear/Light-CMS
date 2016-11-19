@@ -13,7 +13,7 @@ namespace LightCMS.Components.CategoryList
 {
     public class CategoryListComponentController : Controller, IMenuItemTypeComponent
     {
-        public static void Bootstrap(string connectionString)
+        public void Bootstrap(string connectionString)
         {
             using (var db = CMSContextFactory.Create(connectionString))
             {

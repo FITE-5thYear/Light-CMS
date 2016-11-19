@@ -8,8 +8,8 @@ using Newtonsoft.Json;
 using LightCMS.Components;
 
 namespace Components.Main {
-    public class MainComponentController : Controller {
-        public static void Bootstrap(string sqlString)
+    public class MainComponentController : Controller, IComponent {
+        public void Bootstrap(string sqlString)
         {
             //find or create pattern
             using (var db = CMSContextFactory.Create(sqlString))
