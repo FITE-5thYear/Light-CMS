@@ -10,7 +10,7 @@ namespace LightCMS.Components.SingleArticle
 {
     public class SingleArticleComponentController : Controller, IMenuItemTypeComponent
     {
-        public static void Bootstrap(string connectionString)
+        public void Bootstrap(string connectionString)
         {
             using (var db = CMSContextFactory.Create(connectionString))
             {

@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using LightCMS.Components.Main.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LightCMS.Components
 {
-    public interface IMenuItemTypeComponent
+    public interface IComponent
     {
-        IActionResult Render(MenuItem menuItem, string connectionString);
+        void Bootstrap(string connectionString);
     }
 }

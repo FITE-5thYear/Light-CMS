@@ -117,9 +117,13 @@ namespace LightCMS
 
         private void BootstrapComponents(string connectionString)
         {
-            MainComponentController.Bootstrap(connectionString);
-            SingleArticleComponentController.Bootstrap(connectionString);
-            CategoryListComponentController.Bootstrap(connectionString);
+            var mainComp = new MainComponentController();
+            var singleArtComp = new SingleArticleComponentController();
+            var catListComp = new CategoryListComponentController();
+
+            mainComp.Bootstrap(connectionString);
+            singleArtComp.Bootstrap(connectionString);
+            catListComp.Bootstrap(connectionString);
         }
     }
 }
