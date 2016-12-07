@@ -7,34 +7,57 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using LightCMS.Components;
 
-namespace Components.Main {
-    public class MainComponentController : Controller {
+namespace Components.Main
+{
+    public class MainComponentController : Controller
+    {
         public static void Bootstrap(string sqlString)
         {
             //find or create pattern
             using (var db = CMSContextFactory.Create(sqlString))
             {
+                //add language if not exist
+                var lang = db.Language.SingleOrDefault(laganguage => laganguage.Name == "English");
+                if (lang == null)
+                {
+                    lang = new Language();
+                    lang.Name = "English";
+                    lang.Id = 1;
+                    lang.orientation = "rtl";
+                    db.Add(lang);
+                }
+
+                lang = db.Language.SingleOrDefault(laganguage => laganguage.Name == "Arabic");
+                if (lang == null)
+                {
+                    lang = new Language();
+                    lang.Name = "Arabic";
+                    lang.Id = 2;
+                    lang.orientation = "ltr";
+                    db.Add(lang);
+                }
+
                 //init category
                 var mainCategory = db.Categories.SingleOrDefault(cat => cat.Id == 1);
-                if(mainCategory == null)
+                if (mainCategory == null)
                 {
                     mainCategory = new Category()
                     {
                         Id = 1,
-                        Description = "Main Category"
+                        // Description = "Main Category"
                     };
                     db.Add(mainCategory);
                 }
 
                 //init menu
                 var mainMenu = db.Menus.SingleOrDefault(menu => menu.Id == 1);
-                if(mainMenu == null)
+                if (mainMenu == null)
                 {
                     mainMenu = new Menu()
                     {
                         Id = 1,
                         CategoryId = 1, // main category
-                        Description = "Main Menu - Displayed at header"
+                        //Description = "Main Menu - Displayed at header"
                     };
                     db.Add(mainMenu);
                 }
@@ -62,11 +85,12 @@ namespace Components.Main {
 
 
 
-                if (menuItem == null) {
+                if (menuItem == null)
+                {
                     //TODO: remove main-menu rendering from here
                     //prepare mainmenu
                     ViewBag.MenuItems = db.MenuItems
-                                                .Where(_item => _item.MenuId == 1 ) // just main-menu
+                                                .Where(_item => _item.MenuId == 1) // just main-menu
                                                 .Include(_item => _item.ChildMenu)
                                                 .ThenInclude(menu => menu.MenuItems)
                                                 .ToList()

@@ -10,7 +10,7 @@ namespace LightCMS.Components.Main.Models
     public class MenuItem
     {
         public int Id { get; set; }
-        public string Label { get; set; }
+        //public string Label { get; set; }
         public string Link { get; set; }
         //JSON params
         public string Params { get; set; }

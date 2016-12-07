@@ -10,12 +10,16 @@ namespace LightCMS.Components.Main.Models
     {
         public int Id { get; set; }
 
+        /*
         public string Title { get; set; }
 
         public string ShortContent { get; set; }
 
         [StringLength(500)]
         public string FullContent { get; set; }
+
+        */
+
 
 
         //one Category
