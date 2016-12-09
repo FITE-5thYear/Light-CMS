@@ -126,16 +126,8 @@ namespace LightCMS.Components.SingleArticle
         }
 
         [NonAction]
-        public IActionResult Render(MenuItem menuItem, string connectionString)
-        {    
-            
-            if( HttpContext.Session.GetInt32("language")==null)
-            {
-                HttpContext.Session.SetInt32("language", 1);
-            }
-            int language_id = (int)HttpContext.Session.GetInt32("language");
-
-                
+        public IActionResult Render(MenuItem menuItem, string connectionString, int language_id)
+        {       
 
            //int language_id = 1; //1 for English & 2 for Arabic
 

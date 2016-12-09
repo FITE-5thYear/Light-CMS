@@ -46,7 +46,7 @@ namespace LightCMS.Components.CategoryList
             }
         }
 
-        public IActionResult Render(MenuItem menuItem, string connectionString)
+        public IActionResult Render(MenuItem menuItem, string connectionString, int langId)
         {
             var menuItemParams = JsonConvert.DeserializeObject<Params>(menuItem.Params);
 

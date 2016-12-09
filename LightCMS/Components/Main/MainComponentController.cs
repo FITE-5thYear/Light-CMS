@@ -6,11 +6,13 @@ using LightCMS.Components.Main.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using LightCMS.Components;
+using Microsoft.AspNetCore.Http;
 
 namespace Components.Main
 {
     public class MainComponentController : Controller
     {
+        
         public static void Bootstrap(string sqlString)
         {
             //find or create pattern
@@ -67,7 +69,7 @@ namespace Components.Main
         }
 
         //TODO: remove @connectioString param
-        public IActionResult GetMenuItemView(string link, string connectionString)
+        public IActionResult GetMenuItemView(string link, string connectionString, int langId)
         {
             //first fetch menu item
             using (var db = CMSContextFactory.Create(connectionString))
@@ -75,7 +77,7 @@ namespace Components.Main
                 if (link == null)
                 { // requesting index page
                     var indexLink = db.MenuItems.SingleOrDefault(_item => _item.IsIndexPage).Link;
-                    return this.GetMenuItemView(indexLink, connectionString); //invoke self with the new link
+                    return this.GetMenuItemView(indexLink, connectionString, langId); //invoke self with the new link
                 }
 
                 var menuItem = db.MenuItems
@@ -102,7 +104,7 @@ namespace Components.Main
                 Type componentType = Type.GetType("LightCMS." + menuItem.MenuItemType.Extension.Namespace);
                 IMenuItemTypeComponent component = Activator.CreateInstance(componentType) as IMenuItemTypeComponent;
 
-                return component.Render(menuItem, connectionString);
+                return component.Render(menuItem, connectionString, langId);
             }
         }
     }

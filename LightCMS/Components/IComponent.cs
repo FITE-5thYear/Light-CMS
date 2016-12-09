@@ -9,6 +9,6 @@ namespace LightCMS.Components
 {
     public interface IMenuItemTypeComponent
     {
-        IActionResult Render(MenuItem menuItem, string connectionString);
+        IActionResult Render(MenuItem menuItem, string connectionString, int langId);
     }
 }
