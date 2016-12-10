@@ -1,0 +1,78 @@
+﻿<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Items
+            <small>Add to exist Item</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Admin Panel</a></li>
+            <li class="active">Items</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9">
+                <!-- general form elements -->
+                <div class="box box-primary">                   
+      
+                    <!-- form start -->
+                    <form role="form" action="~/admin/items/add" method="post">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Language</label>
+                                <select class="form-control" name="LanguageId">
+                                    @foreach (var lang in ViewBag.languages)
+                                    {
+                                    <option id="LanguageId" value="@lang.Id">@lang.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Item</label>
+                                <select class="form-control" name="ItemId">
+                                    @foreach (var item in ViewBag.items)
+                                    {
+                                    <option id="ItemId" value="@item.ItemId">@item.Title</option>
+                                    }
+                                </select>
+                            </div>
+
+                                <div class="form-group">
+                                    <label for="Title">Title</label>
+                                    <input type="text" class="form-control" name="Title" id="Title" placeholder="Enter title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ShortContent">Short Content</label>
+                                    <textarea rows="4" class="form-control" name="ShortContent" id="ShortContent" placeholder="Enter short content"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="FullContent">Full Content</label>
+                                    <textarea rows="4" class="form-control" name="FullContent" id="FullContent" placeholder="Enter full content"></textarea>
+                                </div>
+                            </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+                
+            </div>
+            <!--/.col (left) -->
+           
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>

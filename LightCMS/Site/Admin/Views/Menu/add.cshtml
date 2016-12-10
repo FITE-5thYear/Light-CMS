@@ -7,11 +7,12 @@
     <section class="content-header">
         <h1>
             Menus
-            <small>Create</small>
+            <small>Add to an exist menu</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Admin Panel</a></li>
+            <li><a href="#">Admin Panel</a></
+                <a href="~/Site/Admin/Views/Menu/add.cshtml">~/Site/Admin/Views/Menu/add.cshtml</a>li>
             <li class="active">Menus</li>
         </ol>
     </section>
@@ -24,25 +25,36 @@
                 <div class="box box-primary">
 
                     <!-- form start -->
-                    <form role="form" action="~/admin/menus/create" method="post">
-
+                    <form role="form" action="~/admin/menus/add" method="post">
                         <div class="box-body">
-                            <h5>Please add the Menu in the default language, the English on</h5>
-
+  
                             <div class="form-group">
-                                <label>Category</label>
-                                <select class="form-control" name="CategoryId">
-                                    @foreach (var cat in ViewBag.cats)
+                                <label>Language</label>
+                                <select class="form-control" name="LanguageId">
+                                    @foreach (var lang in ViewBag.languages)
                                     {
-                                    <option id="CategoryId" value="@cat.CategoryId">@cat.Description</option>
+                                    <option id="LanguageId" value="@lang.Id">@lang.Name</option>
                                     }
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="Description">Description</label>
-                                <input type="text" class="form-control" name="Description" id="Description" placeholder="Enter Description">
+                                <label>Menu</label>
+                                <select class="form-control" name="MenuId">
+                                    @foreach (var menu in ViewBag.menus)
+                                    {
+                                    <option id="MenuId" value="@menu.MenuId">@menu.Description</option>
+                                    }
+                                </select>
                             </div>
+
+
+                            <div class="form-group">
+                                <label for="Title">Description</label>
+                                <input type="text" class="form-control" name="Description" placeholder="Enter description">
+                            </div>
+
+
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">

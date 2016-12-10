@@ -161,7 +161,12 @@
                 <div class="navbar-right">
                      @foreach (var lag in ViewBag.Languages)
                      {
-                        <a asp-controller="Site/Main/Controllers/SetLanguage" asp-action="Index" asp-route-id=@lag.Id>@lag.Name</a>
+                      <!--
+                         //linkText, actionName, controllerName, routeValues, htmlAttributes
+                         Html.ActionLink("@lag.Name", "Index", "Site/Main/Controllers/SetLanguage", new { id = @lag.Id }, null);
+                           -->
+                      <a asp-controller="Site/Main/Controllers/SetLanguage" asp-action="Index" asp-route-id=@lag.Id>@lag.Name</a>
+                    
                      }
                </div>
             </div>

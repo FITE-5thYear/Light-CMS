@@ -15,8 +15,8 @@ namespace LightCMS.Site.Main.Controllers
         //TODO: redirect to refresh the page 
         public IActionResult Index(int language_id)
         {
-            HttpContext.Session.SetInt32("language", language_id); 
-            return View();
+            HttpContext.Session.SetInt32("language", language_id);
+            return RedirectToAction("Router", "Index");
         }
     }
 }

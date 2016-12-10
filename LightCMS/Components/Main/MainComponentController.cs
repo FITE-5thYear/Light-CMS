@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using LightCMS.Config;
 using System.Linq;
@@ -12,7 +12,6 @@ namespace Components.Main
 {
     public class MainComponentController : Controller
     {
-        
         public static void Bootstrap(string sqlString)
         {
             //find or create pattern
@@ -46,9 +45,27 @@ namespace Components.Main
                     mainCategory = new Category()
                     {
                         Id = 1,
-                        // Description = "Main Category"
                     };
                     db.Add(mainCategory);
+                    Category_Language category_language = new Category_Language()
+                    {
+                        Id = 1,
+                        Description = "Main Category",
+                        LanguageId = 1,
+                        CategoryId=1
+
+                    };
+                    db.Add(category_language);
+                   
+                     category_language = new Category_Language()
+                    {
+                        Id = 2,
+                        Description = "الرئيسية",
+                        LanguageId = 2,
+                        CategoryId=1
+                    };
+                    db.Add(category_language);
+
                 }
 
                 //init menu
@@ -62,6 +79,23 @@ namespace Components.Main
                         //Description = "Main Menu - Displayed at header"
                     };
                     db.Add(mainMenu);
+                    Menu_Language mainMenu_Language = new Menu_Language()
+                    {
+                        Id = 1,
+                        LanguageId=1,
+                        MenuId=1,
+                        Description = "Main Menu - Displayed at header"
+                    };
+                    db.Add(mainMenu_Language);
+                   
+                     mainMenu_Language = new Menu_Language()
+                    {
+                        Id = 2,
+                        LanguageId=2,
+                        MenuId=1,
+                        Description = "اللائحة الرئيسية"
+                    };
+                    db.Add(mainMenu_Language);
                 }
 
                 db.SaveChanges();

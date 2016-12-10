@@ -55,14 +55,7 @@ namespace LightCMS
             //add session
             services.AddDistributedMemoryCache();
             services.AddMemoryCache();
-            services.AddSession(
-           /*  options =>
-             {
-                 options.IdleTimeout = TimeSpan.FromMinutes(30);
-                 options.CookieName = ".MyApplication";
-             }
-           */
-           );
+            services.AddSession();
 
             //add functionality to inject IOptions<T>
             services.AddOptions();

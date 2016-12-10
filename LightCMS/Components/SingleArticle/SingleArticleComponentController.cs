@@ -127,25 +127,7 @@ namespace LightCMS.Components.SingleArticle
 
         [NonAction]
         public IActionResult Render(MenuItem menuItem, string connectionString, int language_id)
-        {       
-
-           //int language_id = 1; //1 for English & 2 for Arabic
-
-            /*
-            int? language_id = (int)HttpContext.Session.GetInt32("language");
-            if (language_id.Equals(null))
-            {
-                language_id = 1;
-            }
-             string value = HttpContext.Session.GetString("language");
-             if (string.IsNullOrEmpty(value))
-             {
-                 HttpContext.Session.SetString("language","1");
-             }
-             int language_id = int.Parse(value);
-
-             */
-
+        { 
             var menuItemParams = JsonConvert.DeserializeObject<Params>(menuItem.Params);
 
             using (var db = Config.CMSContextFactory.Create(connectionString))

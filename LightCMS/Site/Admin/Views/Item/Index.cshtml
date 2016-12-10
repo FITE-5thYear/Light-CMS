@@ -8,7 +8,9 @@
     <section class="content-header">
         <h1>
             Items
-            <small><a href="~/admin/items/create">Add Item</a></small>
+            <small><a href="~/admin/items/add">Add to an exist Item</a></small>
+            <small><a href="~/admin/items/create">Ceate New Item</a></small>
+
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -27,19 +29,23 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
+                                    <th>Language</th>
                                     <th>Title</th>
-                                    <th>Category</th>
+                                    <th>Short Content</th>
+                                    <th> Full Content</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var item in ViewBag.items)
+                              
+                                @foreach (var item in ViewBag.items)
                                 {
-                                    <tr>
-                                        <td>@item.Id</td>
-                                        <td>@item.Title</td>
-                                        <td>@item.Category.Description</td>
-                                    </tr>
-
+                                <tr>
+                                    <td>@item.Item.Id</td>
+                                    <td>@item.Language.Name</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.ShortContent</td>
+                                    <td>@item.FullContent</td>
+                                </tr>
                                 }
                             </tbody>
                         </table>

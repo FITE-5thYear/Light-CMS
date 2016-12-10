@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
 }
 
@@ -8,7 +9,9 @@
     <section class="content-header">
         <h1>
             Menus
-            <small><a href="~/admin/menus/create">Add Menu</a></small>
+            <small><a href="~/admin/menus/add">Add to an exist Menu</a></small>
+
+            <small><a href="~/admin/menus/create">Create New Menu</a></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -27,17 +30,27 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
+                                    <th>Language</th>
                                     <th>Description</th>
                                     <th>Category</th>
+                            
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var menu in ViewBag.menus)
                                 {
                                     <tr>
-                                        <td>@menu.Id</td>
+                                        <td>@menu.MenuId</td>
+                                        <td>@menu.Language.Name</td>
                                         <td>@menu.Description</td>
-                                        <td>@menu.Category.Description</td>
+                                        @foreach (var v in @menu.Menu.Category.Category_Language)
+                                        {
+                                            if (v.MenuId == @menu.MenuId && v.LanguageId == @menu.Language.Id)
+                                            {
+                                                <td>v.Description</td>
+                                                return;
+                                            }
+                                        } 
                                     </tr>
 
                                 }

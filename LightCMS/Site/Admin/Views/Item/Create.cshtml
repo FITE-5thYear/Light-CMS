@@ -1,4 +1,6 @@
-﻿@{
+﻿<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+@{
     Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
 }
 
@@ -22,30 +24,30 @@
             <div class="col-md-9">
                 <!-- general form elements -->
                 <div class="box box-primary">                   
-                    
                     <!-- form start -->
                     <form role="form" action="~/admin/items/create" method="post">
                         <div class="box-body">
-                            <div class="form-group">
-                                <label for="Title">Title</label>
-                                <input type="text" class="form-control" name="Title" placeholder="Enter title">
-                            </div>
-                            <div class="form-group">
-                                <label for="ShortContent">Short Content</label>
-                                <textarea rows="4" class="form-control" name="ShortContent" placeholder="Enter short content" ></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="FullContent">Full Content</label>
-                                <textarea rows="4" class="form-control" name="FullContent" placeholder="Enter full content" ></textarea>
-                            </div>
+                            <h5>Please add the item in the default language, the English on</h5>
                             <div class="form-group">
                                 <label>Category</label>
                                 <select class="form-control" name="CategoryId">
-                                    @foreach(var cat in ViewBag.cats)
+                                    @foreach (var cat in ViewBag.cats)
                                     {
-                                        <option value="@cat.Id">@cat.Description</option>
+                                    <option id="CategoryId" value="@cat.CategoryId">@cat.Description</option>
                                     }
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Title">Title</label>
+                                <input type="text" class="form-control" name="Title" id="Title" placeholder="Enter title">
+                            </div>
+                            <div class="form-group">
+                                <label for="ShortContent">Short Content</label>
+                                <textarea rows="4" class="form-control" name="ShortContent" id="ShortContent" placeholder="Enter short content" ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="FullContent">Full Content</label>
+                                <textarea rows="4" class="form-control" name="FullContent"  id="FullContent" placeholder="Enter full content" ></textarea>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -64,7 +66,3 @@
     </section>
     <!-- /.content -->
 </div>
-
-<script>
-
-</script>
