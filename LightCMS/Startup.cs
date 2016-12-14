@@ -115,11 +115,47 @@ namespace LightCMS
             /* Routes */
             app.UseMvc(routes =>
             {
+
+                routes.MapRoute(
+                       name: "admin_item",
+                       template: "admin/items",
+                       defaults: new { controller = "ItemAdmin" }
+                       );
+
+                routes.MapRoute(
+                name: "admin_category",
+                template: "admin/categories",
+                defaults: new { controller = "CategoryAdmin" }
+                );
+
+                routes.MapRoute(
+                name: "admin_menu",
+                template: "admin/menus",
+                defaults: new { controller = "MenuAdmin" }
+                );
+
+                routes.MapRoute(
+                name: "admin_menu_item",
+                template : "admin/menu-items",
+                defaults: new {Controller= "Menu_ItemAdmin" }
+                );
+
+
+
                 routes.MapRoute(
                     name: "admin-panel",
                     template: "admin",
                     defaults: new { controller = "AdminPanel", action = "Index" }
                 );
+
+
+
+                routes.MapRoute(
+                name: "config",
+                template: "config/{action}/{language_id}",
+                defaults: new { controller = "Router" });
+
+
 
                 routes.MapRoute(
                     name: "default",

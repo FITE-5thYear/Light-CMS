@@ -32,7 +32,9 @@
                                     <th>Id</th>
                                     <th>Language</th>
                                     <th>Description</th>
-                                    <th>Category</th>
+                            
+                                    <th></th>
+                                    <th></th>
                             
                                 </tr>
                             </thead>
@@ -50,7 +52,9 @@
                                                 <td>v.Description</td>
                                                 return;
                                             }
-                                        } 
+                                        }    
+                                        <td><small><a href="~/admin/menus/delete/@menu.Id">Delete</a></small></td>
+                                        <td><small><a href="~/admin/menus/edit/@menu.Id">Edit</a></small></td>
                                     </tr>
 
                                 }

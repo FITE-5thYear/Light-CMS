@@ -22,7 +22,7 @@ namespace LightCMS.Components.Main.Models
 
         // one MenuItemType
         public int? MenuItemTypeId { get; set; }
-        public virtual MenuItemType MenuItemType { get; set; }
+        public virtual MenuItemType  MenuItemType { get; set; }
 
         // one Menu
         [ForeignKey("Menu")]

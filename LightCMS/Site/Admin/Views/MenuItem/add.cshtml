@@ -1,4 +1,6 @@
-﻿@{
+﻿<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+@{
     Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
 }
 
@@ -6,13 +8,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Categories
-            <small>Add to exist category</small>
+            Items
+            <small>Add to exist Menu Item</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Admin Panel</a></li>
-            <li class="active">Categories</li>
+            <li class="active">Menu Item</li>
         </ol>
     </section>
     <!-- Main content -->
@@ -21,11 +23,10 @@
             <!-- left column -->
             <div class="col-md-9">
                 <!-- general form elements -->
-                <div class="box box-primary">
-
-
+                <div class="box box-primary">                   
+      
                     <!-- form start -->
-                    <form role="form" action="~/admin/categories/add" method="post">
+                    <form role="form" action="~/admin/menu-items/add" method="post">
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Language</label>
@@ -36,38 +37,34 @@
                                     }
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label>Menu Item</label>
+                                <select class="form-control" name="MenuItemId">
+                                    @foreach (var menuItem in ViewBag.menuItems)
+                                    {
+                                    <option id="MenuItemId" value="@menuItem.MenuItemId">@menuItem.Label</option>
+                                    }
+                                </select>
+                            </div>
+
+                                <div class="form-group">
+                                    <label for="Title">Label</label>
+                                    <input type="text" class="form-control" name="Label" id="Title" placeholder="Enter Label">
+                                </div>
+                            </div>
+
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label>Category</label>
-                                    <select class="form-control" name="CategoryId">
-                                        @foreach (var cats in ViewBag.cats)
-                                        {
-                                        <option id="CategoryId" value="@cats.CategoryId">@cats.Description</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label for="Title">Description</label>
-                                    <input type="text" class="form-control" name="Description" placeholder="Enter description">
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
                     </form>
                 </div>
                 <!-- /.box -->
-
+                
             </div>
             <!--/.col (left) -->
-
+           
         </div>
         <!-- /.row -->
     </section>

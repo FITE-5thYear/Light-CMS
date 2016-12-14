@@ -7,10 +7,23 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Learning</title>
-    <link href="theme/css/all.css" rel="stylesheet">
-    <link href="theme/css/app.css" rel="stylesheet">
+    @{ if ((string)@TempData["orientation"] == "ltr")
+        {
+          <link href="theme/css/all_ltr.css" rel="stylesheet">
+          <link href="theme/css/app_ltr.css" rel="stylesheet">
+        }
+        else if ((string)@TempData["orientation"] == "rtl")
+        {
+
+           <link href="theme/css/all_rtl.css" rel="stylesheet">
+            <link href="theme/css/app_rtl.css" rel="stylesheet">
+
+            }
+        }
+
 </head>
-<body>
+<!-- <body dir="rtl"-->
+<body dir= @TempData["orientation"] >
 
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top navbar-size-large navbar-size-xlarge paper-shadow" data-z="0" data-animated role="navigation">
@@ -73,28 +86,30 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="main-nav">
                 <ul class="nav navbar-nav navbar-nav-margin-left">
-                @{ int counter = -1; }
-                @foreach (var menuItem in ViewBag.MenuItems)
-                {
-                    counter = counter + 1; 
-                    <li class="dropdown @if (menuItem.Link == ViewBag.Link) { @Html.Raw("active"); } ">
-                        @if (menuItem.IsMenu)
-                        {
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@ViewBag.MenuItemsLabels[counter] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            @foreach (var innerMenuItem in menuItem.ChildMenu.MenuItems)
+                    @foreach (var menuItem in ViewBag.MenuItems)
+                    {
+                        <li class="dropdown @if (menuItem.MenuItem.Link == ViewBag.Link)
+                        { @Html.Raw("active");
+                        } ">
+                            @if (menuItem.MenuItem.IsMenu)
                             {
-                               counter = counter + 1;
-                               <li><a href="@innerMenuItem.Link">@ViewBag.MenuItemsLabels[counter]</a></li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@menuItem.Label <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    @foreach (var innerMenuItem in menuItem.MenuItem.ChildMenu.MenuItems)
+                                    {
+                                    <li><a href="@innerMenuItem.Link">@innerMenuItem.Label</a></li>
+
+                                    }
+                                </ul>
                             }
-                        </ul>
-                        }
-                        else
-                        {
-                        <a href="@menuItem.Link">@ViewBag.MenuItemsLabels[counter]</a>
-                        }
-                    </li>
-                }
+                            else
+                            {
+                                 <a href="@menuItem.MenuItem.Link">@menuItem.Label</a>
+                            }
+                        </li>
+
+                    }
+
                     <!--<li class="dropdown active">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages <span class="caret"></span></a>
                       <ul class="dropdown-menu">
@@ -161,12 +176,7 @@
                 <div class="navbar-right">
                      @foreach (var lag in ViewBag.Languages)
                      {
-                      <!--
-                         //linkText, actionName, controllerName, routeValues, htmlAttributes
-                         Html.ActionLink("@lag.Name", "Index", "Site/Main/Controllers/SetLanguage", new { id = @lag.Id }, null);
-                           -->
-                      <a asp-controller="Site/Main/Controllers/SetLanguage" asp-action="Index" asp-route-id=@lag.Id>@lag.Name</a>
-                    
+                           <a href="/config/SetLanguage/@lag.Id">@lag.Name</a>
                      }
                </div>
             </div>
@@ -184,3 +194,4 @@
     <script src="theme/js/all.js"></script>
     <script src="theme/js/app.js"></script>
 </body>
+</html>

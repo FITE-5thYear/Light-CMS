@@ -30,6 +30,8 @@
                                     <th>Category Id</th>
                                     <th>Language</th>
                                     <th>Description</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,7 +40,9 @@
                                     <tr>
                                         <td>@cat_lang.CategoryId</td>
                                         <td>@cat_lang.Language.Name</td>
-                                        <td>@cat_lang.Description</td>                                        
+                                        <td>@cat_lang.Description</td>  
+                                        <td><small><a href="~/admin/categories/delete/@cat_lang.Id">Delete</a></small></td>
+                                        <td><small><a href="~/admin/categories/edit/@cat_lang.Id">Edit</a></small></td>
                                     </tr>
 
                                 }

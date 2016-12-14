@@ -33,6 +33,8 @@
                                     <th>Title</th>
                                     <th>Short Content</th>
                                     <th> Full Content</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,6 +47,9 @@
                                     <td>@item.Title</td>
                                     <td>@item.ShortContent</td>
                                     <td>@item.FullContent</td>
+                                    <td><small><a href="~/admin/items/delete/@item.Id">Delete</a></small></td>
+                                    <td><small><a href="~/admin/items/edit/@item.Id">Edit</a></small></td>
+
                                 </tr>
                                 }
                             </tbody>

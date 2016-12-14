@@ -5,8 +5,6 @@ using LightCMS.Components.Main.Models;
 using LightCMS.Components.SingleArticle.Models;
 using LightCMS.Config;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace LightCMS.Components.SingleArticle
@@ -52,7 +50,6 @@ namespace LightCMS.Components.SingleArticle
                     menuItem = new MenuItem()
                     {
                         Id = 1,
-                        //    Label = "Home",
                         Link = "home",
                         MenuItemTypeId = 1,
                         Params = "{ItemId : 1}", // item will be initialized next
@@ -91,10 +88,6 @@ namespace LightCMS.Components.SingleArticle
                     _item = new Item()
                     {
                         Id = 1,
-                        //  Title = "Welcome To LightCMS",
-                        // ShortContent = "Welcome to LightCMS",
-                        //FullContent = @"Thank you for using LightCMS, you can access the <strong>Admin Panel</strong> by navigating to <strong>/admin</admin><br>.
-                        //              This is a sample page which was generated automatically by LightCMS.",
                         CategoryId = 1
                     };
                     db.Add(_item);
@@ -138,23 +131,12 @@ namespace LightCMS.Components.SingleArticle
 
                 //TODO: remove main-menu rendering from here
                 //prepare mainmenu
-                ViewBag.MenuItems = db.MenuItems
-                                            .Where(_item => _item.MenuId == 1) // just main-menu
-                                            .Include(_item => _item.ChildMenu)
-                                            .ThenInclude(menu => menu.MenuItems)
-                                            .ToList()
-                ;
-
-                //add labels of menuitems that suit the selected language
-                List<string> menueItem_labels = new List<string>();
-                foreach (MenuItem menu_item in ViewBag.MenuItems) {
-                    menueItem_labels.Add( db.MenuItem_Language.Where(_menuItem_language => _menuItem_language.MenuItemId == menu_item.Id && _menuItem_language.LanguageId == language_id)
-                    .Select(_menuItem_language => _menuItem_language.Label)
-                    .SingleOrDefault());       
-                }
-                ViewBag.MenuItemsLabels = menueItem_labels;
-
-
+                ViewBag.MenuItems = db.MenuItem_Language
+                                        .Include(_menu_item => _menu_item.MenuItem)
+                                            .ThenInclude(_item => _item.ChildMenu)
+                                                 .ThenInclude(menu => menu.MenuItems)
+                                                  .Where(_item => _item.MenuItem.MenuId == 1 && _item.LanguageId==language_id) // just main-menu
+                                            .ToList();
 
 
                 //render result:
@@ -167,18 +149,14 @@ namespace LightCMS.Components.SingleArticle
 
 
                 var lags = db.Language.ToList();
-
+                 ViewBag.Languages = lags;
 
                 var temp = db.Item_Language.SingleOrDefault(_Item_Language => _Item_Language.LanguageId == language_id && _Item_Language.ItemId == item.Id);
-                                            
+               
                 ViewBag.Title = temp.Title;
                 ViewBag.FullContent = temp.FullContent;
-                // ViewBag.Title = item.Title;
-                //iewBag.FullContent = item.FullContent;
                 ViewBag.Link = menuItem.Link;
-                ViewBag.Languages = lags;
-
-
+             
                 return View("~/Components/SingleArticle/Views/article.cshtml");
             }
         }

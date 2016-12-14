@@ -24,7 +24,7 @@ namespace Components.Main
                     lang = new Language();
                     lang.Name = "English";
                     lang.Id = 1;
-                    lang.orientation = "rtl";
+                    lang.orientation = "ltr";
                     db.Add(lang);
                 }
 
@@ -34,7 +34,7 @@ namespace Components.Main
                     lang = new Language();
                     lang.Name = "Arabic";
                     lang.Id = 2;
-                    lang.orientation = "ltr";
+                    lang.orientation = "rtl";
                     db.Add(lang);
                 }
 
@@ -137,7 +137,7 @@ namespace Components.Main
 
                 Type componentType = Type.GetType("LightCMS." + menuItem.MenuItemType.Extension.Namespace);
                 IMenuItemTypeComponent component = Activator.CreateInstance(componentType) as IMenuItemTypeComponent;
-
+               
                 return component.Render(menuItem, connectionString, langId);
             }
         }

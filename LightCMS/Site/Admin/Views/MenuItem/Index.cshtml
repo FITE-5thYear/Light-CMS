@@ -8,7 +8,8 @@
     <section class="content-header">
         <h1>
             Menu Items
-            <small><a href="~/admin/menu-items/create">Add Menu Item</a></small>
+            <small><a href="~/admin/menu-items/add">Add to exist Menu Item</a></small>
+            <small><a href="~/admin/menu-items/create">Create New Menu Item</a></small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -31,27 +32,43 @@
                                     <th>Link</th>
                                     <th>Type</th>
                                     <th>Is Nested Menu</th>
+                                    <th>Menu</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var menuItem in ViewBag.menuItems)
                                 {
                                     <tr>
-                                        <td>@menuItem.Id</td>
+                                        <td>@menuItem.MenuItem.Id</td>
                                         <td>@menuItem.Label</td>
-                                        <td>/@menuItem.Link</td>
+                                        <td>/@menuItem.MenuItem.Link</td>
                                         <td> 
-                                                @if(menuItem.MenuItemType == null)
+                                                @if(menuItem.MenuItem.MenuItemType == null)
                                                 {
                                                     Html.Raw("-");
                                                 }else
                                                 {
 
-                                                    @menuItem.MenuItemType.Name
+                                                    @menuItem.MenuItem.MenuItemType.Name
                                                 }
                                         </td>
-                                        <td>@menuItem.IsMenu</td>
-                                    </tr>
+                                        <td>@menuItem.MenuItem.IsMenu</td>
+
+
+                                        @foreach (var menu in ViewBag.menus)
+                                        {
+                                            if (menu.MenuId == menuItem.MenuItem.MenuId  && menu.LanguageId== 1)
+                                            {
+                                            <td> @menu.Description</td>
+       
+                                            }
+
+                                        }
+                                        <td><small><a href="~/admin/menu-items/delete/@menuItem.Id">Delete</a></small></td>
+                                        <td><small><a href="~/admin/menu-items/edit/@menuItem.Id">Edit</a></small></td>
+                                   </tr>
 
                                 }
                             </tbody>

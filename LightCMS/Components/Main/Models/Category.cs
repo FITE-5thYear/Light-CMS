@@ -18,8 +18,10 @@ namespace LightCMS.Components.Main.Models
         //[Key]
        // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
+
+
         public virtual ICollection<Item> Items { get; set; }
+    
         public virtual ICollection<Category_Language> Category_Language { get; set; }
 
     }

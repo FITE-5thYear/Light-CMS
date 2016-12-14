@@ -52,18 +52,15 @@ namespace LightCMS.Components.CategoryList
 
             using (var db = Config.CMSContextFactory.Create(connectionString))
             {
-                var category = db.Categories
-                                            .Include(cat => cat.Items)
-                                           .SingleOrDefault(
-                                                cat => cat.Id == menuItemParams.CategoryId);
+                var category = db.Category_Language.Where(cat => cat.CategoryId == menuItemParams.CategoryId).ToList();
 
                 //TODO: remove main-menu rendering from here
                 //prepare mainmenu
-                ViewBag.MenuItems = db.MenuItems
-                                            .Include(_item => _item.ChildMenu)
-                                            .ThenInclude(menu => menu.MenuItems)
-                                            .Where(_item => _item.MenuId == 1) // just main-menu
-                                            .ToList()
+                ViewBag.MenuItems = db.MenuItem_Language.Include(menu_item=>menu_item.MenuItem)
+                                                           .ThenInclude(_item => _item.ChildMenu)
+                                                               .ThenInclude(menu => menu.MenuItems)
+                                                         .Where(_item => _item.MenuItemId == 1 && _item.LanguageId == langId) // just main-menu
+                                                         .ToList()
                 ;
                 ViewBag.Link = menuItem.Link;
 
@@ -74,10 +71,11 @@ namespace LightCMS.Components.CategoryList
                     ViewBag.Title = "Category Not Found";
                     return View("~/Themes/MainTheme/Layouts/404.cshtml");
                 }
-
-                ViewBag.items = category.Items;
-                
-                return View("~/Components/CategoryList/Views/list.cshtml");
+                var lags = db.Language.ToList();
+                ViewBag.Languages = lags;
+                ViewBag.items = db.Item_Language.Include(x => x.Item).Where(item_lang => item_lang.Item.CategoryId == menuItemParams.CategoryId && item_lang.LanguageId==langId).ToList(); 
+               
+               return View("~/Components/CategoryList/Views/list.cshtml");
             }
         }
     }
