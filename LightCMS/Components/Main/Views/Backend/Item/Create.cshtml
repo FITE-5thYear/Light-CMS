@@ -40,12 +40,16 @@
                             </div>
                             <div class="form-group">
                                 <label>Category</label>
-                                <select class="form-control" name="CategoryId">
+                                <select class="form-control" name="CategoryId" onchange="CategoryChanged(this)">
                                     @foreach(var cat in ViewBag.cats)
                                     {
                                         <option value="@cat.Id">@cat.Description</option>
                                     }
                                 </select>
+                            </div>
+
+                            <div id="container-fields">
+
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -66,5 +70,23 @@
 </div>
 
 <script>
+    function CategoryChanged(select) {
+        var $select = $(select);
+        console.log($select.val());
+        $.ajax({
+            method: "GET",
+            url : '/admin/categories/getCustomFields',
+            data : {
+                catId : $select.val()
+            },
+            success: function (response) {
+                console.log(response);
+                $('#container-fields').html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
 
+    }
 </script>

@@ -1,0 +1,8 @@
+﻿<!-- Render Category Custom Fields -->
+@foreach(var customField in ViewBag.CustomFields)
+{    
+    <div class="form-group">
+        <input type='@Html.Raw(customField.Value<string>("Type"))' placeholder='@Html.Raw(customField.Value<string>("Label"))' name='@Html.Raw(customField.Value<string>("Name"))' class="form-control"/>
+    </div>    
+
+}

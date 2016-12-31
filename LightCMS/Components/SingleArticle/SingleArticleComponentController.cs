@@ -5,6 +5,7 @@ using LightCMS.Components.Main.Models;
 using LightCMS.Components.SingleArticle.Models;
 using LightCMS.Config;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace LightCMS.Components.SingleArticle
 {
@@ -111,6 +112,14 @@ namespace LightCMS.Components.SingleArticle
                 ViewBag.FullContent = item.FullContent;
                 ViewBag.Link = menuItem.Link;
 
+                //TODO:
+                if (item.CustomValues!= null && !item.CustomValues.Equals("")) { 
+                    JObject obj = JsonConvert.DeserializeObject(item.CustomValues) as JObject;
+                    ViewBag.CustomFieldValue = obj.Values().ToList()[0];
+                }else
+                {
+                    ViewBag.CustomFieldValue = "";
+                }
                 return View("~/Components/SingleArticle/Views/article.cshtml");
             }
         }

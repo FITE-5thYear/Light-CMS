@@ -28,6 +28,7 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Description</th>
+                                    <th>Parent Category</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,7 +37,15 @@
                                     <tr>
                                         <td>@cat.Id</td>
                                         <td>@cat.Description</td>                                        
-                                    </tr>
+                                        <td>@if (cat.ParentCategory != null) {
+                                                @Html.Raw(cat.ParentCategory.Description)
+                                            } else {
+                                                @Html.Raw("-")
+                                        }
+                                        </td>
+
+
+                                </tr>
 
                                 }
                             </tbody>

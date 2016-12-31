@@ -17,6 +17,7 @@ namespace LightCMS.Components.Main.Models
         [StringLength(500)]
         public string FullContent { get; set; }
 
+        public string CustomValues { get; set; }
 
         //one Category
         public int CategoryId { get; set; }
