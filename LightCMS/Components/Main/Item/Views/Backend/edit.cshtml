@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Items
+            <small>Edit Item</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/backend">Admin Panel</a></li>
+            <li class="active">Items</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9">
+                <!-- general form elements -->
+                <div class="box box-primary">                   
+      
+                    <!-- form start -->
+                    <form role="form" action="~/backend/items/edit" method="post">
+                        <div class="box-body">
+                            
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select class="form-control" name="CategoryId">
+                                    @foreach (var cat in ViewBag.cats)
+                                    {
+                                        if (cat.CategoryId == ViewBag.itemLanguage.Item.CategoryId)
+                                        {
+                                        <option id="CategoryId" value="@cat.CategoryId" selected="selected">@cat.Description</option>
+                                        }
+                                        else
+                                        {
+                                        <option id="CategoryId" value="@cat.CategoryId">@cat.Description</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Title">Title</label>
+                                <input type="text" class="form-control" name="Title" id="Title" value=@ViewBag.itemLanguage.Title>
+                            </div>
+                            <div class="form-group">
+                                <label for="ShortContent">Short Content</label>
+                                <textarea rows="4" class="form-control" name="ShortContent" id="ShortContent" >@ViewBag.itemLanguage.ShortContent</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="FullContent">Full Content</label>
+                                <textarea rows="4" class="form-control" name="FullContent" id="FullContent" placeholder="Enter full content">@ViewBag.itemLanguage.FullContent</textarea>
+                            </div>
+
+                            <div id="custom_fields">
+                                @foreach (var customField in ViewBag.catCustomFields)
+                                {
+                                    <div class="form-group">
+                                        <label>@customField.Label</label>
+                                        <input type="@customField.Type" class="form-control" placeholder='@customField.Label' name='@customField.Name' value="@(ViewBag.itemCustomValue.Value<string>(customField.Name))" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                        <input type="hidden" class="form-control" name="ItemId" id="ItemId" value=@ViewBag.itemLanguage.Item.Id>
+                        <input type="hidden" class="form-control" name="Item_LanguageId" id="Item_LanguageId" value=@ViewBag.itemLanguage.Id>
+                        <input type="hidden" class="form-control" name="LanguageId" id="LanguageId" value=@ViewBag.itemLanguage.LanguageId>
+
+                    </form>
+                </div>
+                <!-- /.box -->
+                
+            </div>
+            <!--/.col (left) -->
+           
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    function CategoryChanged(select) {
+        var $select = $(select);
+        $.ajax({
+            method: "GET",
+            url: '/backend/categories/getCustomFields',
+            data: {
+                catId: $select.val()
+            },
+            success: function (response) {
+                $('#custom_fields').html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+</script>

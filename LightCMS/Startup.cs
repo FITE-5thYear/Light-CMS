@@ -39,7 +39,7 @@ namespace LightCMS
 
             //bootstrap components
             BootstrapComponents(settings.MySqlConnectionString);
-            
+
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -50,10 +50,18 @@ namespace LightCMS
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();           
+            services.AddMvc();
+
+            //add session
+            services.AddDistributedMemoryCache();
+            services.AddMemoryCache();
+            services.AddSession();
 
             //add functionality to inject IOptions<T>
             services.AddOptions();
+
+
+
 
             //map Settings section to Settings object
             services.Configure<Settings>(Configuration.GetSection("Settings"));
@@ -63,6 +71,9 @@ namespace LightCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            //enable session before MVC
+            app.UseSession();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -99,14 +110,52 @@ namespace LightCMS
                 RequestPath = new PathString("/theme")
             });
 
+
+
             /* Routes */
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
-                    name : "admin-panel",
-                    template : "admin",
-                    defaults : new { controller = "AdminPanel",  action = "Index" }
+                       name: "admin_item",
+                       template: "admin/items",
+                       defaults: new { controller = "ItemAdmin" }
+                       );
+
+                routes.MapRoute(
+                name: "admin_category",
+                template: "admin/categories",
+                defaults: new { controller = "CategoryAdmin" }
                 );
+
+                routes.MapRoute(
+                name: "admin_menu",
+                template: "admin/menus",
+                defaults: new { controller = "MenuAdmin" }
+                );
+
+                routes.MapRoute(
+                name: "admin_menu_item",
+                template : "admin/menu-items",
+                defaults: new {Controller= "Menu_ItemAdmin" }
+                );
+
+
+
+                routes.MapRoute(
+                    name: "admin-panel",
+                    template: "admin",
+                    defaults: new { controller = "AdminPanel", action = "Index" }
+                );
+
+
+
+                routes.MapRoute(
+                name: "config",
+                template: "config/{action}/{language_id}",
+                defaults: new { controller = "Router" });
+
+
 
                 routes.MapRoute(
                     name: "default",
