@@ -99,12 +99,16 @@ namespace LightCMS.Components.Main.Controllers
 
                 ViewBag.itemLanguage = itemLanguage;
 
-                ViewBag.catCustomFields = JsonConvert.DeserializeObject<List<CustomField>>(itemLanguage.Item.Category.CustomFields);
+                if (itemLanguage.Item.Category.CustomFields != null)
+                {
+                    ViewBag.catCustomFields = JsonConvert.DeserializeObject<List<CustomField>>(itemLanguage.Item.Category.CustomFields);
+                    ViewBag.itemCustomValue = JsonConvert.DeserializeObject<dynamic>(itemLanguage.Item.CustomValues) as JObject;
+                }
+                else
+                    ViewBag.catCustomFields = new List<CustomField>();
 
                 ViewBag.cats = db.Category_Language.Where(cat_lang => cat_lang.LanguageId == itemLanguage.LanguageId).ToList();
-
-                ViewBag.itemCustomValue = JsonConvert.DeserializeObject<dynamic>(itemLanguage.Item.CustomValues) as JObject;
-
+                
                 return View("~/Components/Main/Item/Views/Backend/edit.cshtml");
             }
         }

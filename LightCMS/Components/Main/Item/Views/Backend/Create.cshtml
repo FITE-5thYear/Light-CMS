@@ -68,7 +68,7 @@
     </section>
     <!-- /.content -->
 </div>
-
+<script src="~/admin-theme/plugins/ckeditor/ckeditor.js"></script>
 <script>
     function CategoryChanged(select) {
         var $select = $(select);
@@ -86,5 +86,9 @@
             }
         });
     }
+
+    $(function () {
+        CKEDITOR.replace('FullContent');
+    });
 </script>
 
