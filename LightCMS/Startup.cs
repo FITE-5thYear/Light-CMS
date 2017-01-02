@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Http;
 using Components.Main;
 using LightCMS.Components.SingleArticle;
 using LightCMS.Components.CategoryList;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using MySQL.Data.EntityFrameworkCore.Extensions;
 
 namespace LightCMS
 {
@@ -60,12 +62,18 @@ namespace LightCMS
             //add functionality to inject IOptions<T>
             services.AddOptions();
 
-
-
-
             //map Settings section to Settings object
             services.Configure<Settings>(Configuration.GetSection("Settings"));
 
+            //TODO: fix this ugly
+            var settings = new Settings();
+            new ConfigureFromConfigurationOptions<Settings>(Configuration.GetSection("Settings"))
+            .Configure(settings);
+
+            services.AddDbContext<LightCMS.Config.CMSDBContext>(options =>
+            {
+                options.UseMySQL(settings.MySqlConnectionString);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +81,17 @@ namespace LightCMS
         {
             //enable session before MVC
             app.UseSession();
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                CookieName = "Auth",
+                AuthenticationScheme = "Auth",
+                LoginPath = new PathString("/login"), //  this is the relative path requests will be redirected to when a user attempts to access a resource but has not been authenticated.
+                AccessDeniedPath = new PathString("/forbidden"), // this is the relative path requests will be redirected to when a user attempts to access a resource but does not pass any authorization policies for that resource
+                AutomaticChallenge = true, // this flag indicates that the middleware should redirect the browser to the LoginPath or AccessDeniedPath when authorization fails.
+                AutomaticAuthenticate = false // this flag indicates that the middleware should run on every request and attempt to validate and reconstruct any serialized principal it created.
+            });
+
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

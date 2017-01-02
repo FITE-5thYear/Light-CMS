@@ -3,11 +3,13 @@
         "jQuery": "3.1.1",
         "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
         "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-        "Microsoft.AspNetCore.Mvc": "1.0.1",
-        "Microsoft.AspNetCore.Razor.Tools": {
-            "version": "1.0.0-preview2-final",
-            "type": "build"
-        },
+        "Microsoft.AspNetCore.Identity": "1.0.0",
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
+      "Microsoft.AspNetCore.Mvc": "1.0.1",
+      "Microsoft.AspNetCore.Razor.Tools": {
+        "version": "1.0.0-preview2-final",
+        "type": "build"
+      },
         "Microsoft.AspNetCore.Routing": "1.0.1",
         "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
         "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using LightCMS.Components;
 using Microsoft.AspNetCore.Http;
+using LightCMS.Components.Main.User.Models;
 
 namespace Components.Main {
     public class MainComponentController : Controller, IComponent {
@@ -98,6 +99,8 @@ namespace Components.Main {
 
                 db.SaveChanges();
             }
+
+            createSuperUserAndRole(sqlString);
         }
 
         //TODO: remove @connectioString param
@@ -137,6 +140,51 @@ namespace Components.Main {
                 IMenuItemTypeComponent component = Activator.CreateInstance(componentType) as IMenuItemTypeComponent;
                
                 return component.Render(menuItem, connectionString, langId);
+            }
+        }
+
+        private void createSuperUserAndRole(string connectionString)
+        {
+            using (var db = CMSContextFactory.Create(connectionString))
+            {
+
+                //findOrCreate pattern:
+                var user = db.Users.SingleOrDefault(_user => _user.Username.Equals("Admin"));
+
+                if(user == null)
+                {
+                    Role role = new Role()
+                    {
+                        Name = "Admin"
+                    };
+
+
+                    User superUser = new User()
+                    {
+                        Username = "Admin",
+                        FirstName = "Admin",
+                        LastName = "Admin",
+                        Email = "Admin@Admin.com",
+                        Password = "admin",
+                        InsertedAt = DateTime.Now
+                    };
+
+                    UserRole userRole = new UserRole()
+                    {
+                        Role = role,
+                        User = superUser
+                    };
+
+                    superUser.UserRoles.Add(userRole);
+                    role.UserRoles.Add(userRole);
+
+                    db.Add(role);
+                    db.Add(userRole);
+                    db.Add(superUser);
+
+                    db.SaveChanges();
+                }
+                
             }
         }
     }

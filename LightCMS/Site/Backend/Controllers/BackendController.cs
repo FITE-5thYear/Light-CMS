@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -12,6 +13,7 @@ namespace LightCMS.Controllers
         }
 
         [Route("backend")]
+        [Authorize(Roles = "Admin", ActiveAuthenticationSchemes = "Auth")]
         public IActionResult Index(string page)
         {
             return View("~/Site/Backend/Views/Dashboard/Index.cshtml");            

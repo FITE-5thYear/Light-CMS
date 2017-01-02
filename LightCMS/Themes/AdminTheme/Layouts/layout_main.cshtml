@@ -15,7 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Font Awesome -->
   <link rel="stylesheet" href="~/admin-theme/dist/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="~/admin-theme/dist/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="~/admin-theme/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -216,7 +216,7 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="/backend/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -277,7 +277,7 @@ desired effect
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Group 1</a></li>
+            <li><a href="/backend/users">All Users</a></li>
             <li><a href="#">Group 2</a></li>
           </ul>
         </li>
