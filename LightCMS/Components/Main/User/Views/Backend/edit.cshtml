@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Users
+            <small>Assign Roles</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/backend">Admin Panel</a></li>
+            <li class="active">User</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9">
+                <!-- general form elements -->
+                <div class="box box-primary">
+
+                    <!-- form start -->
+                    <form role="form" action="~/backend/users/edit" method="post">
+                        <div class="box-body">
+                            <input type="hidden" name="userId" value="@ViewBag.user.Id" />
+                            <div class="form-group">
+                                <label>Roles</label>
+                                <select id="roles_select" multiple="multiple" name="roles">
+                                    @foreach(var role in ViewBag.roles)
+                                    {
+                                        bool found = false;
+                                        @foreach (var userRole in ViewBag.user.UserRoles)
+                                        {
+                                            if (role.Id == userRole.Role.Id)
+                                            {
+                                                <option value="@role.Id" selected>@role.Name</option> 
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!found) { <option value="@role.Id">@role.Name</option>}
+                                    }
+                                </select>
+                                
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+
+            </div>
+            <!--/.col (left) -->
+
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    $(function () {
+        $('#roles_select').multiselect();
+    });
+</script>

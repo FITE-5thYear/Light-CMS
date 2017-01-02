@@ -3,7 +3,7 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +15,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Font Awesome -->
   <link rel="stylesheet" href="~/admin-theme/dist/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="~/admin-theme/dist/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="~/admin-theme/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -23,6 +23,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect.
   -->
   <link rel="stylesheet" href="~/admin-theme/dist/css/skins/skin-blue.min.css">
+
+  <!-- jQuery 2.2.3 -->
+  <script src="~/admin-theme/plugins/jQuery/jquery-2.2.3.min.js"></script>
+  <link rel="stylesheet" href="~/admin-theme/plugins/jQueryUI/1.12.1/jquery-ui.min.css" />
+
+  <!-- appendGrid -->
+  <link rel="stylesheet" href="~/admin-theme/plugins/appendGrid/jquery.appendGrid-1.4.2.min.css" />
+
+  <!-- MultiSelect -->
+  <link rel="stylesheet" href="~/admin-theme/dist/css/bootstrap-multiselect.css" />
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -209,7 +219,7 @@ desired effect
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="/backend/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -258,10 +268,11 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
         <li><a href="#"><i class="fa fa-link"></i> <span>General Settings</span></a></li>
-        <li><a href="/admin/items"><i class="fa fa-link"></i> <span>Items</span></a></li>
-        <li><a href="/admin/categories"><i class="fa fa-link"></i> <span>Categories</span></a></li>
-        <li><a href="/admin/menus"><i class="fa fa-link"></i> <span>Menus</span></a></li>
-        <li><a href="/admin/menu-items"><i class="fa fa-link"></i> <span>Menu Items</span></a></li>
+        <li><a href="/backend/items"><i class="fa fa-link"></i> <span>Items</span></a></li>
+        <li><a href="/backend/categories"><i class="fa fa-link"></i> <span>Categories</span></a></li>
+        <li><a href="/backend/menus"><i class="fa fa-link"></i> <span>Menus</span></a></li>
+        <li><a href="/backend/menu-items"><i class="fa fa-link"></i> <span>Menu Items</span></a></li>
+          <li><a href="/backend/language"><i class="fa fa-link"></i> <span>Languages</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Users</span>
             <span class="pull-right-container">
@@ -269,10 +280,11 @@ desired effect
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Group 1</a></li>
+            <li><a href="/backend/users">All Users</a></li>
             <li><a href="#">Group 2</a></li>
           </ul>
         </li>
+        <li><a href="/backend/roles"><i class="fa fa-link"></i><span>Roles</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -373,13 +385,18 @@ desired effect
 
 <!-- REQUIRED JS SCRIPTS -->
 
-<!-- jQuery 2.2.3 -->
-<script src="~/admin-theme/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="~/admin-theme/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="~/admin-theme/dist/js/app.min.js"></script>
 
+<!-- JQuery UI -->
+<script src="~/admin-theme/plugins/jQueryUI/jquery-ui.min.js"></script>
+<!-- AppendGrid -->
+<script src="~/admin-theme/plugins/appendGrid/jquery.appendGrid-1.4.2.js"></script>
+
+<!--MultiSelect-->
+<script src="~/admin-theme/dist/js/bootstrap-multiselect.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the

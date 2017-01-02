@@ -13,7 +13,7 @@ namespace LightCMS.Components.CategoryList
 {
     public class CategoryListComponentController : Controller, IMenuItemTypeComponent
     {
-        public static void Bootstrap(string connectionString)
+        public void Bootstrap(string connectionString)
         {
             using (var db = CMSContextFactory.Create(connectionString))
             {
@@ -46,25 +46,18 @@ namespace LightCMS.Components.CategoryList
             }
         }
 
-        public IActionResult Render(MenuItem menuItem, string connectionString)
+        public IActionResult Render(MenuItem menuItem, string connectionString, int langId, IBundle bundle)
         {
+
+            if (!AuthorizationHelper.IsAuthorized(bundle.UserRole, menuItem.Role))
+                return Redirect("/forbidden");
+
             var menuItemParams = JsonConvert.DeserializeObject<Params>(menuItem.Params);
 
             using (var db = Config.CMSContextFactory.Create(connectionString))
             {
-                var category = db.Categories
-                                            .Include(cat => cat.Items)
-                                           .SingleOrDefault(
-                                                cat => cat.Id == menuItemParams.CategoryId);
-
-                //TODO: remove main-menu rendering from here
-                //prepare mainmenu
-                ViewBag.MenuItems = db.MenuItems
-                                            .Include(_item => _item.ChildMenu)
-                                            .ThenInclude(menu => menu.MenuItems)
-                                            .Where(_item => _item.MenuId == 1) // just main-menu
-                                            .ToList()
-                ;
+                var category = db.Category_Language.Where(cat => cat.CategoryId == menuItemParams.CategoryId).ToList();
+                                
                 ViewBag.Link = menuItem.Link;
 
                 //render result:
@@ -74,9 +67,12 @@ namespace LightCMS.Components.CategoryList
                     ViewBag.Title = "Category Not Found";
                     return View("~/Themes/MainTheme/Layouts/404.cshtml");
                 }
+                var lags = db.Language.ToList();
+                ViewBag.Languages = lags;
+                ViewBag.items = db.Item_Language.Include(x => x.Item).Where(item_lang => item_lang.Item.CategoryId == menuItemParams.CategoryId && item_lang.LanguageId==langId).ToList();
 
-                ViewBag.items = category.Items;
-                
+                ViewBag.Bundle = bundle;
+
                 return View("~/Components/CategoryList/Views/list.cshtml");
             }
         }

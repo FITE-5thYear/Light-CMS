@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_login_backend.cshtml";
+}
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="../../index2.html"><b>Light</b>cms</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+        <form action="/backend/login" method="post">
+            <div class="form-group has-feedback">
+                <input id="email" type="email" class="form-control" placeholder="Email" name="email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input id="password" type="password" class="form-control" placeholder="Password" name="password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox"> Remember Me
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" onclick="signIn(event)">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <!-- /.social-auth-links -->                
+    </div>
+    <!-- /.login-box-body -->
+
+
+    <div class="row" style="margin-top:17px;">
+        <div class="col-md-12">
+            <div class="alert alert-danger" id="error_container" style="display:none;">
+                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function signIn(e) {
+        e.preventDefault();
+        $.ajax('/backend/login', {
+            method: "POST",
+            data: {
+                email: $('#email').val(),
+                password: $('#password').val()
+            },
+            success: function () {
+                location.replace("/backend");
+            }, error: function (response) {                
+                $('#error_container').html("Wrong Email/Password");
+                $('#error_container').css('display', 'block');
+            }
+        });
+    }
+</script>

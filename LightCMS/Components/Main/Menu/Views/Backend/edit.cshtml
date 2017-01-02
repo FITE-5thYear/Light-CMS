@@ -1,0 +1,75 @@
+﻿<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Items
+            <small>Edit Menu</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/backend">Admin Panel</a></li>
+            <li class="active">Menu</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9">
+                <!-- general form elements -->
+                <div class="box box-primary">                   
+      
+                    <!-- form start -->
+                    <form role="form" action="~/backend/menus/edit" method="post">
+                        <div class="box-body">
+                            
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select class="form-control" name="CategoryId">
+                                    @foreach (var cat in ViewBag.cats)
+                                    {
+                                        if (cat.CategoryId == ViewBag.menu.Menu.CategoryId)
+                                        {
+                                        <option id="CategoryId" value="@cat.CategoryId" selected="selected">@cat.Description</option>
+                                        }
+                                        else
+                                        {
+                                        <option id="CategoryId" value="@cat.CategoryId">@cat.Description</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <input type="hidden" class="form-control" name="MenuId" id="MenuId" value=@ViewBag.menu.Menu.Id>
+                            <input type="hidden" class="form-control" name="Menu_LanguageId" id="Menu_LanguageId" value=@ViewBag.menu.Id>
+                            <input type="hidden" class="form-control" name="LanguageId" id="LanguageId" value=@ViewBag.menu.LanguageId>
+
+
+                                <div class="form-group">
+                                    <label for="Title">Description</label>
+                                    <input type="text" class="form-control" name="Description" id="Description" value=@ViewBag.menu.Description>
+                                </div>
+                                
+                            </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+                
+            </div>
+            <!--/.col (left) -->
+           
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>

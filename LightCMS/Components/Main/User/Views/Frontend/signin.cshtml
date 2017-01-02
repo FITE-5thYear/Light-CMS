@@ -1,0 +1,58 @@
+﻿@{ 
+    Layout = "~/Themes/MainTheme/Layouts/_Layout_SignIn_SignUp.cshtml";
+}
+
+<div id="content">
+    <div class="container-fluid">
+        <div class="lock-container">
+            <div class="panel panel-default text-center paper-shadow" data-z="0.5">
+                <h1 class="text-display-1 text-center margin-bottom-none">Sign In</h1>                
+                <form action="/signin" method="post">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="form-control-material">
+                                <input class="form-control" id="email" type="email" placeholder="Enter Email" name="email">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-control-material">
+                                <input class="form-control" id="password" type="password" placeholder="Enter Password" name="password">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="login(event)">Login</button>
+                        <br />
+                        <a href="sign-up.html" class="link-text-color">Create account</a>
+                    </div>
+                </form>
+            </div>
+            <div class="row" style="margin-top:17px;">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" id="error_container" style="display:none;">
+                        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function login(event) {
+        event.preventDefault();
+        $.ajax('/signin', {
+            method: "POST",
+            data: {
+                email: $('#email').val(),
+                password: $('#password').val()
+            },
+            success: function () {
+                location.replace("/");
+            },
+            error: function () {
+                $('#error_container').html("Wrong Email/Password or not approved yet.");
+                $('#error_container').css('display', 'block');
+            }
+        });
+    }
+</script>

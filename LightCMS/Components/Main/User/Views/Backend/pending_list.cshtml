@@ -1,0 +1,102 @@
+﻿@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Pending Users
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Admin Panel</a></li>
+            <li class="active">Users</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Date joined</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in ViewBag.users)
+                                {
+                                    <tr>
+                                        <td>@user.Id</td>
+                                        <td>@user.FirstName @user.LastName</td>
+                                        <td>@user.Username</td>
+                                        <td>@user.InsertedAt.ToString("dd/MM/yyyy")</td>
+                                        <td><a href="#" onclick="openApproveModal(event, @user.Id)">Approve</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<div class="modal fade" id="approveModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Approve</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to approve this person?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" onclick="approveUser()">Approve</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- TODO render at the end of body -->
+<script src="~/admin-theme/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/admin-theme/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+    var userToApprove;
+
+    $(function () {
+        $("#example1").DataTable();
+    });
+
+    function openApproveModal(e, id) {
+        e.preventDefault();
+        userToApprove = id;
+        $('#approveModal').modal('show');
+    }
+
+    function approveUser() {
+        $.ajax('/backend/users/approve/' + userToApprove, {
+            success: function () {
+                location.reload();
+            }
+        });
+    }
+</script>

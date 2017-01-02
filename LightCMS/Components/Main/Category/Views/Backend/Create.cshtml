@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/Themes/AdminTheme/Layouts/layout_main.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Categories
+            <small>Create new category</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/backend">Admin Panel</a></li>
+            <li class="active">Categories</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-9">
+                <!-- general form elements -->
+                <div class="box box-primary">
+
+                    <!-- form start -->
+                    <form role="form" action="~/backend/categories/create" method="post">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="Description">Description - Default Language (English)</label>
+                                <input type="text" class="form-control" name="description" placeholder="Enter description">
+                            </div>
+                            <div class="form-group">
+                                <label for="Title">Parent Category</label>
+                                <select class="form-control" name="ParentId">
+                                    <option value=""></option>
+                                    @foreach(var cat in ViewBag.Categories)
+                                    {
+                                        <option value="@cat.Id">@cat.Category_Language[0].Description</option>
+                                    }
+                                </select>
+                             </div>
+                            <div class="form-group">
+                                <label>Access</label>
+                                <select class="form-control" name="RoleId">
+                                    @foreach (var role in ViewBag.roles)
+                                    {
+                                        <option value="@role.Id">@role.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            
+                             
+                            <!-- Custom fields -->
+                            <div id="container">
+                                <table id="customFieldsTbl" style="width:100%;"></table>
+                            </div>
+
+                            <input type="hidden" name="CustomFields" id="CustomFields"/>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <!-- TODO invoke submit() function onclick() -->
+                            <button type="submit" class="btn btn-primary" onclick="var customFields = $('#customFieldsTbl').appendGrid('getAllValue');$('#CustomFields').val(JSON.stringify(customFields));">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+
+            </div>
+            <!--/.col (left) -->
+
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#customFieldsTbl').appendGrid({
+            caption: 'Custom Fields',
+            initRows: 1,
+            columns: [
+                { name: 'Name', display: 'Name', type: 'text', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '100%' } },
+                { name: 'Label', display: 'Label', type: 'text', ctrlAttr: { maxlength: 100 }, ctrlCss: { width: '100%' } },                
+                { name: 'Type', display: 'Type', type: 'select', ctrlOptions: { number: 'Number', text: 'Text' } }
+            ],
+            hideButtons: {
+                insert: true,
+                moveUp: true,
+                moveDown: true,
+                removeLast : true
+            }
+        });
+    });
+   
+    function submit() {
+        //e.preventDefault();
+        alert();
+
+        var customFields = $('#customFieldsTbl').appendGrid('getAllValue');console.log("Custom Fields");
+        console.log(customFields);
+
+        $('#CustomFields').val(customFields);
+        $('form').submit();
+
+        return false;
+    }
+</script>
