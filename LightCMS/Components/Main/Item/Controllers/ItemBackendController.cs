@@ -7,9 +7,11 @@ using LightCMS.Components.Main.Models;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LightCMS.Components.Main.Controllers
 {
+    [Authorize(Roles = "Admin", ActiveAuthenticationSchemes = "Auth")]
     public class ItemBackendController : Controller
     {
         private Settings Settings { get; set; }

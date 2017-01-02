@@ -5,9 +5,11 @@ using LightCMS.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using LightCMS.Components.Main.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LightCMS.Components.Main.Controllers
 {
+    [Authorize(Roles = "Admin", ActiveAuthenticationSchemes = "Auth")]
     public class Menu_ItemAdminController : Controller
     {
         private Settings Settings { get; set; }
