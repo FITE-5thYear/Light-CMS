@@ -19,6 +19,12 @@ namespace LightCMS.Controllers
             return View("~/Site/Backend/Views/Dashboard/Index.cshtml");            
         }
 
+        [Route("forbidden")]
+        public IActionResult Forbidden()
+        {
+            return View("~/Site/Backend/Views/403.cshtml");
+        }
+
         
     }
 }

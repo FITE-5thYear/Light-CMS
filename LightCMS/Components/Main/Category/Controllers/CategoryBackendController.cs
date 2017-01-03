@@ -48,20 +48,21 @@ namespace LightCMS.Components.Main.Controllers
                                             .Where(cat => cat.Items.Count == 0) // a suitable category to be Parent Cateogry (no items)
                                             .Include(cat => cat.Category_Language)
                                             .ToList();
+
+                ViewBag.roles = db.Roles.ToList();
                 return View("~/Components/Main/Category/Views/Backend/Create.cshtml");
             }            
         }
 
         [HttpPost]
         [Route("backend/categories/create")]
-        public IActionResult CreateCategory(string description)
+        public IActionResult CreateCategory(Category category, string description)
         {
             //TODO: authorize, validate...
             using (var db = CMSContextFactory.Create(Settings.MySqlConnectionString))
             {
 
-                //TODO: encapsulate in Category Model
-                var category = new Category();
+                //TODO: encapsulate in Category Model                
                 var customFields = this.Request.Form["CustomFields"].ToString();
 
                 //check if it's the default custom fields, discard
@@ -98,13 +99,15 @@ namespace LightCMS.Components.Main.Controllers
                 ViewBag.categoryLanguage = db.Category_Language
                                                     .Where(_cat => _cat.Id == category_id)
                                                     .Include(catLang => catLang.Category)
+                                                    .ThenInclude(cat => cat.Role)
                                                     .SingleOrDefault();
 
                 ViewBag.Categories = db.Categories
                                             .Where(cat => cat.Items.Count == 0) // a suitable category to be Parent Cateogry (no items)
-                                            .Include(cat => cat.Category_Language)
+                                            .Include(cat => cat.Category_Language)                                            
                                             .ToList();
 
+                ViewBag.roles = db.Roles.ToList();
 
                 return View("~/Components/Main/Category/Views/Backend/edit.cshtml");
             }

@@ -11,5 +11,9 @@ namespace LightCMS.Components.Main.Models
         //one Category
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        //one Role
+        public virtual int? RoleId { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

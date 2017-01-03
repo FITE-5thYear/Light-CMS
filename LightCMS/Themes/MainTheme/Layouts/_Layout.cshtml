@@ -86,7 +86,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="main-nav">
                 <ul class="nav navbar-nav navbar-nav-margin-left">
-                    @foreach (var menuItem in ViewBag.MenuItems)
+                    @foreach (var menuItem in ViewBag.Bundle.MainMenuItems)
                     {
                         <li class="dropdown @if (menuItem.MenuItem.Link == ViewBag.Link)
                         { @Html.Raw("active");

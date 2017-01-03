@@ -55,7 +55,8 @@ namespace LightCMS.Components.SingleArticle
                         IsMenu = false,
                         ChildMenuId = 1, //TODO: this should be zero
                         MenuId = 1,
-                        IsIndexPage = true
+                        IsIndexPage = true,
+                        Role = db.Roles.SingleOrDefault(role => role.Name.Equals("Public"))
                     };
                     db.Add(menuItem);
 
@@ -87,7 +88,8 @@ namespace LightCMS.Components.SingleArticle
                     _item = new Item()
                     {
                         Id = 1,
-                        CategoryId = 1
+                        CategoryId = 1,
+                        Role = db.Roles.SingleOrDefault(role => role.Name.Equals("Public"))
                     };
                     db.Add(_item);
 
@@ -118,26 +120,19 @@ namespace LightCMS.Components.SingleArticle
         }
 
         [NonAction]
-        public IActionResult Render(MenuItem menuItem, string connectionString, int language_id)
-        { 
+        public IActionResult Render(MenuItem menuItem, string connectionString, int language_id, IBundle bundle)
+        {
+
+            if (!AuthorizationHelper.IsAuthorized(bundle.UserRole, menuItem.Role))
+                 return Redirect("/forbidden");
+            
+
             var menuItemParams = JsonConvert.DeserializeObject<Params>(menuItem.Params);
 
             using (var db = Config.CMSContextFactory.Create(connectionString))
             {
                 var item = db.Items.SingleOrDefault(_item => _item.Id == menuItemParams.ItemId);
-
-
-
-                //TODO: remove main-menu rendering from here
-                //prepare mainmenu
-                ViewBag.MenuItems = db.MenuItem_Language
-                                        .Include(_menu_item => _menu_item.MenuItem)
-                                            .ThenInclude(_item => _item.ChildMenu)
-                                                 .ThenInclude(menu => menu.MenuItems)
-                                                  .Where(_item => _item.MenuItem.MenuId == 1 && _item.LanguageId==language_id) // just main-menu
-                                            .ToList();
-
-
+                
                 //render result:
                 if (item == null)
                 {
@@ -163,7 +158,8 @@ namespace LightCMS.Components.SingleArticle
                 ViewBag.Title = temp.Title;
                 ViewBag.FullContent = temp.FullContent;
                 ViewBag.Link = menuItem.Link;
-             
+
+                ViewBag.Bundle = bundle;
                 return View("~/Components/SingleArticle/Views/article.cshtml");
             }
         }

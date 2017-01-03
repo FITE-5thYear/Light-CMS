@@ -50,6 +50,23 @@
                                 </select>
                             </div>
 
+                            <div class="form-group">
+                                <label>Access</label>
+                                <select class="form-control" name="RoleId">
+                                    @foreach (var role in ViewBag.roles)
+                                    {
+                                        if (ViewBag.categoryLanguage.Category.Role.Id == role.Id)
+                                        {
+                                            <option value="@role.Id" selected>@role.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@role.Id">@role.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
                             <!-- Custom fields -->
                             <div id="container">
                                 <table id="customFieldsTbl" style="width:100%;"></table>

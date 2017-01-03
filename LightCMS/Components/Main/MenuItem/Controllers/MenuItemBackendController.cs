@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Authorization;
 namespace LightCMS.Components.Main.Controllers
 {
     [Authorize(Roles = "Admin", ActiveAuthenticationSchemes = "Auth")]
-    public class Menu_ItemAdminController : Controller
+    public class MenuItemBackendController : Controller
     {
         private Settings Settings { get; set; }
 
-        public Menu_ItemAdminController(IOptions<Settings> settings)
+        public MenuItemBackendController(IOptions<Settings> settings)
         {
             Settings = settings.Value;
         }
@@ -46,7 +46,7 @@ namespace LightCMS.Components.Main.Controllers
             {
                 ViewBag.languages = db.Language.Where(lags => lags.Id != 1).ToList();
                 ViewBag.menuItems = db.MenuItem_Language.Where(menu_item_lag=>menu_item_lag.LanguageId==1)
-                                        .ToList();
+                                        .ToList();                
 
                 return View("~/Components/Main/MenuItem/Views/Backend/add.cshtml");
             }
@@ -75,11 +75,19 @@ namespace LightCMS.Components.Main.Controllers
                 ViewBag.menuItemType = db.MenuItemTypes
                                         .ToList();
 
-                ViewBag.menus = db.Menu_Language.Where(menu_lang=> menu_lang.LanguageId==1).Include(menu_lang=>menu_lang.Menu).ToList();
+                ViewBag.menus = db.Menu_Language.Where(menu_lang=> menu_lang.LanguageId==1)
+                                                .Include(menu_lang=>menu_lang.Menu)
+                                                .ToList();
 
-                ViewBag.items = db.Item_Language.Where(item_lang => item_lang.LanguageId == 1).Include(item_lang=>item_lang.Item).ToList();
+                ViewBag.items = db.Item_Language.Where(item_lang => item_lang.LanguageId == 1)
+                                                .Include(item_lang=>item_lang.Item)
+                                                .ToList();
 
-                ViewBag.cats = db.Category_Language.Where(cat_lang => cat_lang.LanguageId == 1).Include(cat_lang=>cat_lang.Category).ToList();
+                ViewBag.cats = db.Category_Language.Where(cat_lang => cat_lang.LanguageId == 1)
+                                                   .Include(cat_lang=>cat_lang.Category)
+                                                   .ToList();
+
+                ViewBag.roles = db.Roles.ToList();
 
                 return View("~/Components/Main/MenuItem/Views/Backend/Create.cshtml");
             }
@@ -87,7 +95,7 @@ namespace LightCMS.Components.Main.Controllers
 
         [HttpPost]
         [Route("backend/menu-items/Create")]
-        public IActionResult CreateMenuItem(string  Label, MenuItem menuItem, FormCollection form)
+        public IActionResult CreateMenuItem(string  Label, MenuItem menuItem, int roleId)
         {
             
             using (var db = CMSContextFactory.Create(Settings.MySqlConnectionString))
@@ -121,6 +129,8 @@ namespace LightCMS.Components.Main.Controllers
                     }
                 }
 
+                menuItem.Role = db.Roles.SingleOrDefault(role => role.Id == roleId);
+
                 db.Add(menuItem);
 
                 MenuItem_Language menuItem_langaue = new MenuItem_Language() { LanguageId = 1, MenuItem = menuItem, Label = Label};
@@ -143,6 +153,7 @@ namespace LightCMS.Components.Main.Controllers
                
                 ViewBag.menuItem = db.MenuItem_Language.Where(_item => _item.Id == menu_items_id)
                                         .Include(_item => _item.MenuItem)
+                                        .ThenInclude(_item => _item.Role)
                                         .SingleOrDefault();
 
                 ViewBag.menuItemType = db.MenuItemTypes .ToList();
@@ -153,6 +164,7 @@ namespace LightCMS.Components.Main.Controllers
 
                 ViewBag.cats = db.Category_Language.Where(cat_lang => cat_lang.LanguageId == 1).Include(cat_lang => cat_lang.Category).ToList();
 
+                ViewBag.roles = db.Roles.ToList();
 
                 return View("~/Components/Main/MenuItem/Views/Backend/edit.cshtml");
             }

@@ -24,6 +24,10 @@ namespace LightCMS.Components.Main.Models
         public int? MenuItemTypeId { get; set; }
         public virtual MenuItemType  MenuItemType { get; set; }
 
+        //one Role
+        public int RoleId { get; set; }
+        public virtual Role Role { get; set; }
+
         // one Menu
         [ForeignKey("Menu")]
         public int MenuId { get; set; }

@@ -47,7 +47,15 @@
                                 <label for="FullContent">Full Content</label>
                                 <textarea rows="4" class="form-control" name="FullContent" placeholder="Enter full content" ></textarea>
                             </div>
-
+                            <div class="form-group">
+                                <label>Access</label>
+                                <select class="form-control" name="RoleId">
+                                    @foreach (var role in ViewBag.roles)
+                                    {
+                                        <option value="@role.Id">@role.Name</option>
+                                    }
+                                </select>
+                            </div>
                             <div id="custom_fields">
                                 <!--Custom Fields go here -->
                             </div>

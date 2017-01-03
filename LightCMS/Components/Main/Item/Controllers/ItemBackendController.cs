@@ -44,6 +44,8 @@ namespace LightCMS.Components.Main.Controllers
             {
                 ViewBag.cats = db.Category_Language.Where(cat_lang => cat_lang.LanguageId == 1).ToList();
 
+                ViewBag.roles = db.Roles.ToList();
+
                 return View("~/Components/Main/Item/Views/Backend/Create.cshtml");
             }
         }
@@ -97,6 +99,8 @@ namespace LightCMS.Components.Main.Controllers
                 Item_Language itemLanguage = db.Item_Language
                                                     .Include(_itemLanguage => _itemLanguage.Item)
                                                     .ThenInclude(item => item.Category)
+                                                    .Include(_itemLanguage => _itemLanguage.Item)
+                                                    .ThenInclude(item => item.Role)
                                                     .SingleOrDefault(_itemLanguage => _itemLanguage.Id == item_language_id);
 
                 ViewBag.itemLanguage = itemLanguage;
@@ -110,7 +114,9 @@ namespace LightCMS.Components.Main.Controllers
                     ViewBag.catCustomFields = new List<CustomField>();
 
                 ViewBag.cats = db.Category_Language.Where(cat_lang => cat_lang.LanguageId == itemLanguage.LanguageId).ToList();
-                
+
+                ViewBag.roles = db.Roles.ToList();
+
                 return View("~/Components/Main/Item/Views/Backend/edit.cshtml");
             }
         }
@@ -128,19 +134,25 @@ namespace LightCMS.Components.Main.Controllers
 
                 //get chosen category
                 var category = db.Categories.SingleOrDefault(cat => cat.Id == item.CategoryId);
-                var customFields = JsonConvert.DeserializeObject<List<CustomField>>(category.CustomFields);
 
-                string customValuesBuilder = "{";
-                foreach (var customField in customFields)
+                string customValuesBuilder = "";
+                if (category.CustomFields != null)
                 {
-                    var nameOfField = customField.Name;
-                    var valueOfField = this.Request.Form[nameOfField];
-                    customValuesBuilder += "\"" + nameOfField + "\":" + valueOfField;
+                    var customFields = JsonConvert.DeserializeObject<List<CustomField>>(category.CustomFields);
+
+                    customValuesBuilder = "{";
+                    foreach (var customField in customFields)
+                    {
+                        var nameOfField = customField.Name;
+                        var valueOfField = this.Request.Form[nameOfField];
+                        customValuesBuilder += "\"" + nameOfField + "\":" + valueOfField;
+                    }
+
+                    customValuesBuilder += "}";
+
+                    item.CustomValues = customValuesBuilder;
                 }
-
-                customValuesBuilder += "}";
-
-                item.CustomValues = customValuesBuilder;
+                
                 db.Entry(item).State = EntityState.Modified;
                               
                 itemLanguage.Item = item;

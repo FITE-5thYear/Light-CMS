@@ -5,12 +5,15 @@ using System.Linq;
 using LightCMS.Components.Main.Models;
 using Microsoft.EntityFrameworkCore;
 using LightCMS.Components;
-using LightCMS.Components.Main.User.Models;
 
 namespace Components.Main {
     public class MainComponentController : Controller, IComponent {
         public void Bootstrap(string sqlString)
         {
+            createRoles(sqlString);
+            createSuperUser(sqlString);
+
+
             //find or create pattern
             using (var db = CMSContextFactory.Create(sqlString))
             {
@@ -42,6 +45,7 @@ namespace Components.Main {
                     mainCategory = new Category()
                     {
                         Id = 1,
+                        Role = db.Roles.SingleOrDefault(role => role.Name.Equals("Public"))
                     };
                     db.Add(mainCategory);
                     Category_Language category_language = new Category_Language()
@@ -98,11 +102,10 @@ namespace Components.Main {
                 db.SaveChanges();
             }
 
-            createSuperUserAndRole(sqlString);
         }
 
         //TODO: remove @connectioString param
-        public IActionResult GetMenuItemView(string link, string connectionString, int langId)
+        public IActionResult GetMenuItemView(string link, string connectionString, int langId, IBundle bundle)
         {
             //first fetch menu item
             using (var db = CMSContextFactory.Create(connectionString))
@@ -110,38 +113,71 @@ namespace Components.Main {
                 if (link == null)
                 { // requesting index page
                     var indexLink = db.MenuItems.SingleOrDefault(_item => _item.IsIndexPage).Link;
-                    return this.GetMenuItemView(indexLink, connectionString, langId); //invoke self with the new link
+                    return this.GetMenuItemView(indexLink, connectionString, langId, bundle); //invoke self with the new link
                 }
 
                 var menuItem = db.MenuItems
                                  .Include(item => item.MenuItemType)
                                  .ThenInclude(menuItemType => menuItemType.Extension)
+                                 .Include(item => item.Role)
                                  .SingleOrDefault(item => item.Link == link);
 
 
 
                 if (menuItem == null)
                 {
-                    //TODO: remove main-menu rendering from here
-                    //prepare mainmenu
-                    ViewBag.MenuItems = db.MenuItems
-                                                .Where(_item => _item.MenuId == 1) // just main-menu
-                                                .Include(_item => _item.ChildMenu)
-                                                .ThenInclude(menu => menu.MenuItems)
-                                                .ToList()
-                    ;
-
                     return new StatusCodeResult(404);
                 }
 
                 Type componentType = Type.GetType("LightCMS." + menuItem.MenuItemType.Extension.Namespace);
                 IMenuItemTypeComponent component = Activator.CreateInstance(componentType) as IMenuItemTypeComponent;
                
-                return component.Render(menuItem, connectionString, langId);
+                return component.Render(menuItem, connectionString, langId, bundle);
             }
         }
 
-        private void createSuperUserAndRole(string connectionString)
+        private void createRoles(string connectionString)
+        {
+            using (var db = CMSContextFactory.Create(connectionString))
+            {
+                var publicRole = db.Roles.SingleOrDefault(role => role.Name.Equals("Public"));
+                if(publicRole == null)
+                {
+                    publicRole = new Role()
+                    {
+                        Name = "Public"
+                    };
+
+                    db.Add(publicRole);
+                    
+                }
+
+                var adminRole = db.Roles.SingleOrDefault(role => role.Name.Equals("Admin"));
+                if(adminRole == null)
+                {
+                    adminRole = new Role()
+                    {
+                        Name = "Admin"
+                    };
+
+                    db.Add(adminRole);
+                }
+
+                var registeredRole = db.Roles.SingleOrDefault(role => role.Name.Equals("Registered"));
+                if(registeredRole == null)
+                {
+                    registeredRole = new Role()
+                    {
+                        Name = "Registered"
+                    };
+                    db.Add(registeredRole);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+        private void createSuperUser(string connectionString)
         {
             using (var db = CMSContextFactory.Create(connectionString))
             {
@@ -150,11 +186,8 @@ namespace Components.Main {
                 var user = db.Users.SingleOrDefault(_user => _user.Username.Equals("Admin"));
 
                 if(user == null)
-                {
-                    Role role = new Role()
-                    {
-                        Name = "Admin"
-                    };
+                {                    
+                    var role = db.Roles.SingleOrDefault(_role => _role.Name.Equals("Admin"));
 
 
                     User superUser = new User()
@@ -164,7 +197,8 @@ namespace Components.Main {
                         LastName = "Admin",
                         Email = "Admin@Admin.com",
                         Password = "admin",
-                        InsertedAt = DateTime.Now
+                        InsertedAt = DateTime.Now,
+                        IsApproved = true
                     };
 
                     UserRole userRole = new UserRole()
@@ -176,7 +210,7 @@ namespace Components.Main {
                     superUser.UserRoles.Add(userRole);
                     role.UserRoles.Add(userRole);
 
-                    db.Add(role);
+                    
                     db.Add(userRole);
                     db.Add(superUser);
 

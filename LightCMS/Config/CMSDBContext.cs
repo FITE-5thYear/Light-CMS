@@ -8,7 +8,6 @@ namespace LightCMS.Config
     using Microsoft.EntityFrameworkCore;
     using MySQL.Data.EntityFrameworkCore.Extensions;
     using Components.Main.Models;
-    using Components.Main.User.Models;
 
     public class CMSDBContext : DbContext
     {

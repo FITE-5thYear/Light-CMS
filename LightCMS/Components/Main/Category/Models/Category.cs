@@ -29,5 +29,7 @@ namespace LightCMS.Components.Main.Models
     
         public virtual ICollection<Category_Language> Category_Language { get; set; }
 
+        public int? RoleId { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

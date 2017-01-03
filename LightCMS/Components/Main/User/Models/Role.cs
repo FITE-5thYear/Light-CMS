@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LightCMS.Components.Main.User.Models
+namespace LightCMS.Components.Main.Models
 {
     public class Role
     {

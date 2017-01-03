@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LightCMS.Components.Main.User.Models
+namespace LightCMS.Components.Main.Models
 {
     [Table("user_roles")]
     public class UserRole

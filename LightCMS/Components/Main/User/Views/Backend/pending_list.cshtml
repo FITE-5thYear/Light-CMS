@@ -7,7 +7,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Users
+            Pending Users
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -29,7 +29,7 @@
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Date joined</th>
-                                    <th>Assign Roles</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,7 +40,7 @@
                                         <td>@user.FirstName @user.LastName</td>
                                         <td>@user.Username</td>
                                         <td>@user.InsertedAt.ToString("dd/MM/yyyy")</td>
-                                        <td><a href="/backend/users/edit/@user.Id">Assign Roles</a></td>
+                                        <td><a href="#" onclick="openApproveModal(event, @user.Id)">Approve</a></td>
                                     </tr>
                                 }
                             </tbody>
@@ -56,14 +56,47 @@
     </section>
     <!-- /.content -->
 </div>
+<div class="modal fade" id="approveModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Approve</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to approve this person?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" onclick="approveUser()">Approve</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- TODO render at the end of body -->
 <script src="~/admin-theme/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="~/admin-theme/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script>
-   
+    var userToApprove;
+
     $(function () {
         $("#example1").DataTable();
     });
 
+    function openApproveModal(e, id) {
+        e.preventDefault();
+        userToApprove = id;
+        $('#approveModal').modal('show');
+    }
+
+    function approveUser() {
+        $.ajax('/backend/users/approve/' + userToApprove, {
+            success: function () {
+                location.reload();
+            }
+        });
+    }
 </script>

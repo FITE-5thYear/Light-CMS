@@ -46,22 +46,18 @@ namespace LightCMS.Components.CategoryList
             }
         }
 
-        public IActionResult Render(MenuItem menuItem, string connectionString, int langId)
+        public IActionResult Render(MenuItem menuItem, string connectionString, int langId, IBundle bundle)
         {
+
+            if (!AuthorizationHelper.IsAuthorized(bundle.UserRole, menuItem.Role))
+                return Redirect("/forbidden");
+
             var menuItemParams = JsonConvert.DeserializeObject<Params>(menuItem.Params);
 
             using (var db = Config.CMSContextFactory.Create(connectionString))
             {
                 var category = db.Category_Language.Where(cat => cat.CategoryId == menuItemParams.CategoryId).ToList();
-
-                //TODO: remove main-menu rendering from here
-                //prepare mainmenu
-                ViewBag.MenuItems = db.MenuItem_Language.Include(menu_item=>menu_item.MenuItem)
-                                                           .ThenInclude(_item => _item.ChildMenu)
-                                                               .ThenInclude(menu => menu.MenuItems)
-                                                         .Where(_item => _item.MenuItemId == 1 && _item.LanguageId == langId) // just main-menu
-                                                         .ToList()
-                ;
+                                
                 ViewBag.Link = menuItem.Link;
 
                 //render result:
@@ -73,9 +69,11 @@ namespace LightCMS.Components.CategoryList
                 }
                 var lags = db.Language.ToList();
                 ViewBag.Languages = lags;
-                ViewBag.items = db.Item_Language.Include(x => x.Item).Where(item_lang => item_lang.Item.CategoryId == menuItemParams.CategoryId && item_lang.LanguageId==langId).ToList(); 
-               
-               return View("~/Components/CategoryList/Views/list.cshtml");
+                ViewBag.items = db.Item_Language.Include(x => x.Item).Where(item_lang => item_lang.Item.CategoryId == menuItemParams.CategoryId && item_lang.LanguageId==langId).ToList();
+
+                ViewBag.Bundle = bundle;
+
+                return View("~/Components/CategoryList/Views/list.cshtml");
             }
         }
     }
